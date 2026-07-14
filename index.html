@@ -23,11 +23,11 @@
     /* ── Cover ── */
     .cover-bg {
       position: absolute; inset: 0; z-index: 0;
-      background: radial-gradient(900px 600px at 80% 30%, rgba(15,98,254,.14) 0, transparent 60%),
-                  radial-gradient(700px 500px at 10% 80%, rgba(17,146,232,.08) 0, transparent 60%),
+      background: radial-gradient(800px 500px at 75% 25%, rgba(15,98,254,.055) 0, transparent 55%),
+                  radial-gradient(600px 400px at 15% 85%, rgba(17,146,232,.035) 0, transparent 55%),
                   #ffffff;
     }
-    .cover-grid { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; flex: 1; gap: 40px; }
+    .cover-grid { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; flex: 1; gap: 40px; max-width: 58%; }
     .cover-tag { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
     .cover-title { font-family: var(--font-sans); font-weight: 300; font-size: clamp(2.8rem, 5.5vw, 4.5rem); line-height: 1.05; letter-spacing: -.02em; color: var(--ink); margin: 0; }
     .cover-title em { font-style: normal; color: var(--ibm-blue); font-weight: 400; }
@@ -58,25 +58,48 @@
     .tile-card--blue { background: var(--ibm-blue); }
     .tile-card--blue .tile-card__tag, .tile-card--blue .tile-card__title, .tile-card--blue .tile-card__body { color: #fff; }
 
-    /* ── Pillar icons ── */
-    .picto { width: 40px; height: 40px; color: var(--ibm-blue); flex-shrink: 0; }
-    .picto svg { width: 100%; height: 100%; }
+    /* ── Carbon icon as <img> — tinted IBM Blue ── */
+    .picto-img {
+      width: 40px; height: 40px; flex-shrink: 0; display: block;
+      /* invert to white then shift hue to IBM Blue #0f62fe */
+      filter: invert(30%) sepia(90%) saturate(4000%) hue-rotate(210deg) brightness(105%);
+    }
 
-    /* ── Team grid ── */
-    .team-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .member { background: var(--bg); padding: 20px 16px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
-    .member__photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid var(--line); flex-shrink: 0; }
+    /* ── Team hierarchy (no connector lines) ── */
+    .team-org { display: flex; flex-direction: column; align-items: center; gap: 16px; flex: 1; justify-content: center; }
+    .team-tier { display: flex; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .team-tier--single { width: 260px; }
+    .team-tier--4     { width: 100%; max-width: 840px; }
+    .team-tier--2     { width: 100%; max-width: 420px; }
+
+    .member { background: var(--bg); padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; flex: 1; }
+    .member__photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid var(--line); flex-shrink: 0; }
     .member__name { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
     .member__role { font-size: 11px; color: var(--ink-muted); line-height: 1.4; }
     .member--lead { background: var(--layer); }
-    .member--lead .member__photo { border-color: var(--ibm-blue); }
+    .member--lead .member__photo { width: 88px; height: 88px; border-color: var(--ibm-blue); border-width: 3px; }
+    .member--lead .member__name { font-size: 15px; }
+    .member--lead .member__role { font-size: 12px; }
     .member--lead .member__name::after { content: ' ✦'; font-size: 9px; color: var(--ibm-blue); }
-    @media (max-width: 900px) {
-      .team-grid { grid-template-columns: repeat(4, 1fr); }
+
+    /* ── Cover decoration panel ── */
+    .cover-deco {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 38%;
+      z-index: 1; pointer-events: none; overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: flex-end;
     }
-    @media (max-width: 560px) {
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .cover-deco__grid {
+      display: grid; grid-template-columns: repeat(4, 56px); grid-template-rows: repeat(4, 56px);
+      gap: 1px; opacity: .13; margin: 0 48px 56px 0;
     }
+    .cover-deco__cell {
+      background: var(--ibm-blue);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cover-deco__cell img { width: 28px; height: 28px; filter: invert(1); }
+    .cover-deco__cell--empty { background: transparent; border: 1px solid var(--ibm-blue); }
+    .cover-deco__cell--solid { background: var(--ibm-blue); }
+    @media (max-width: 900px) { .cover-deco { display: none; } }
 
     /* ── Method image slide ── */
     .method-img { width: 100%; height: auto; border: 1px solid var(--line); display: block; }
@@ -174,8 +197,30 @@
        ══════════════════════════ -->
   <section class="slide is-active" data-slide="1" aria-label="Capa">
     <div class="cover-bg"></div>
-    <!-- decorative IBM mark watermark -->
-    <div class="cover-mark-wrap" aria-hidden="true">
+
+    <!-- decorative icon-grid panel — right side -->
+    <div class="cover-deco" aria-hidden="true">
+      <div class="cover-deco__grid">
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/idea.svg" alt=""></div>
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/chemistry.svg" alt=""></div>
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/collaborate.svg" alt=""></div>
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/partnership.svg" alt=""></div>
+
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/partnership.svg" alt=""></div>
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/idea.svg" alt=""></div>
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/chemistry.svg" alt=""></div>
+        <div class="cover-deco__cell cover-deco__cell--empty"></div>
+        <div class="cover-deco__cell cover-deco__cell--solid"><img src="assets/icons/collaborate.svg" alt=""></div>
+      </div>
     </div>
 
     <div class="slide__inner" style="position:relative; z-index:2;">
@@ -256,49 +301,25 @@
       </div>
       <div class="tiles tiles--4" style="flex:1;">
         <div class="tile-card">
-          <!-- picto: lightbulb -->
-          <svg class="picto" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M16 4a9 9 0 0 1 6 15.7V22H10v-2.3A9 9 0 0 1 16 4z"/>
-            <rect x="10" y="22" width="12" height="2"/>
-            <rect x="12" y="24" width="8"  height="2"/>
-            <line x1="16" y1="4"  x2="16" y2="2"/>
-            <line x1="4"  y1="12" x2="2"  y2="12"/>
-            <line x1="28" y1="12" x2="30" y2="12"/>
-          </svg>
+          <img class="picto-img" src="assets/icons/idea.svg" alt="" aria-hidden="true" />
           <p class="tile-card__tag">01</p>
           <p class="tile-card__title">Inovação</p>
           <p class="tile-card__body">Exploramos tecnologias de ponta para criar soluções que ainda não existem — sempre conectadas ao problema real de negócio.</p>
         </div>
         <div class="tile-card tile-card--accent">
-          <!-- picto: flask -->
-          <svg class="picto" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M12 4v10l-6 12h20L20 14V4"/>
-            <line x1="12" y1="4" x2="20" y2="4"/>
-            <circle cx="11" cy="22" r="1.5" fill="currentColor" stroke="none"/>
-            <circle cx="20" cy="20" r="1"   fill="currentColor" stroke="none"/>
-          </svg>
+          <img class="picto-img" src="assets/icons/chemistry.svg" alt="" aria-hidden="true" />
           <p class="tile-card__tag">02</p>
           <p class="tile-card__title">Experimentação</p>
           <p class="tile-card__body">Validamos hipóteses com protótipos funcionais e MVPs em semanas, não em meses. Falhar rápido é aprender rápido.</p>
         </div>
         <div class="tile-card">
-          <!-- picto: people -->
-          <svg class="picto" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="10" cy="10" r="4"/>
-            <circle cx="22" cy="10" r="4"/>
-            <path d="M2 26a8 8 0 0 1 16 0"/>
-            <path d="M18 26a8 8 0 0 1 12 0" opacity=".5"/>
-          </svg>
+          <img class="picto-img" src="assets/icons/collaborate.svg" alt="" aria-hidden="true" />
           <p class="tile-card__tag">03</p>
           <p class="tile-card__title">Colaboração</p>
           <p class="tile-card__body">Trabalhamos em squads mistas: especialistas IBM e profissionais do cliente, com rituais ágeis e entregas incrementais.</p>
         </div>
         <div class="tile-card tile-card--accent">
-          <!-- picto: handshake -->
-          <svg class="picto" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M2 14l8-6h6l4 4h6l4 6-6 8H8L2 14z"/>
-            <line x1="14" y1="8" x2="18" y2="18"/>
-          </svg>
+          <img class="picto-img" src="assets/icons/partnership.svg" alt="" aria-hidden="true" />
           <p class="tile-card__tag">04</p>
           <p class="tile-card__title">Cocriação</p>
           <p class="tile-card__body">O cliente não é um espectador — é um coautor da solução. Garantimos transferência de conhecimento em cada sprint.</p>
@@ -361,43 +382,56 @@
         <h2 class="title">Client Engineering Brasília</h2>
         <p class="subtitle">Especialistas multidisciplinares, prontos para cocriar com você</p>
       </div>
-      <div class="team-grid" style="flex:1; align-content:start;">
-        <div class="member">
-          <img class="member__photo" src="assets/img/juliana.png" alt="Foto de Juliana Landgraf" />
-          <span class="member__name">Juliana Landgraf</span>
-          <span class="member__role">Gerente de Client Engineering</span>
+      <div class="team-org">
+
+        <!-- Tier 1 · Manager -->
+        <div class="team-tier team-tier--single">
+          <div class="member member--lead">
+            <img class="member__photo" src="assets/img/juliana.png" alt="Foto de Juliana Landgraf" />
+            <span class="member__name">Juliana Landgraf</span>
+            <span class="member__role">Gerente de Client Engineering</span>
+          </div>
         </div>
-        <div class="member">
-          <img class="member__photo" src="assets/img/claudio.png" alt="Foto de Cláudio Farias" />
-          <span class="member__name">Cláudio Farias</span>
-          <span class="member__role">Arquiteto de Solução</span>
+
+        <!-- Tier 2 · 4 specialists -->
+        <div class="team-tier team-tier--4">
+          <div class="member">
+            <img class="member__photo" src="assets/img/claudio.png" alt="Foto de Cláudio Farias" />
+            <span class="member__name">Cláudio Farias</span>
+            <span class="member__role">Arquiteto de Solução</span>
+          </div>
+          <div class="member">
+            <img class="member__photo" src="assets/img/jorge.png" alt="Foto de Jorge Barbosa" />
+            <span class="member__name">Jorge Barbosa</span>
+            <span class="member__role">Engenheiro de IA</span>
+          </div>
+          <div class="member">
+            <img class="member__photo" src="assets/img/laura.png" alt="Foto de Laura Gris Mota" />
+            <span class="member__name">Laura Gris Mota</span>
+            <span class="member__role">Designer de Estratégia</span>
+          </div>
+          <div class="member">
+            <img class="member__photo" src="assets/img/victor.png" alt="Foto de Victor Cordeiro" />
+            <span class="member__name">Victor Cordeiro</span>
+            <span class="member__role">Engenheiro de Plataforma</span>
+          </div>
         </div>
-        <div class="member">
-          <img class="member__photo" src="assets/img/jorge.png" alt="Foto de Jorge Barbosa" />
-          <span class="member__name">Jorge Barbosa</span>
-          <span class="member__role">Engenheiro de IA</span>
+
+        <!-- Tier 3 · 2 interns -->
+        <div class="team-tier team-tier--2">
+          <div class="member">
+            <img class="member__photo" src="assets/img/mariaeduarda.png" alt="Foto de Maria Eduarda Eguchi" />
+            <span class="member__name">Maria Eduarda Eguchi</span>
+            <span class="member__role">Estagiária</span>
+          </div>
+          <div class="member">
+            <img class="member__photo" src="assets/img/angelo.png" alt="Foto de Angelo Córdova" />
+            <span class="member__name">Angelo Córdova</span>
+            <span class="member__role">Estagiário</span>
+          </div>
         </div>
-        <div class="member">
-          <img class="member__photo" src="assets/img/laura.png" alt="Foto de Laura Gris Mota" />
-          <span class="member__name">Laura Gris Mota</span>
-          <span class="member__role">Designer de Estratégia</span>
-        </div>
-        <div class="member">
-          <img class="member__photo" src="assets/img/victor.png" alt="Foto de Victor Cordeiro" />
-          <span class="member__name">Victor Cordeiro</span>
-          <span class="member__role">Engenheiro de Plataforma</span>
-        </div>
-        <div class="member">
-          <img class="member__photo" src="assets/img/maria-eduarda.png" alt="Foto de Maria Eduarda Eguchi" />
-          <span class="member__name">Maria Eduarda Eguchi</span>
-          <span class="member__role">Estagiária</span>
-        </div>
-        <div class="member">
-          <img class="member__photo" src="assets/img/angelo.png" alt="Foto de Angelo Córdova" />
-          <span class="member__name">Angelo Córdova</span>
-          <span class="member__role">Estagiário</span>
-        </div>
-      </div>
+
+      </div><!-- /team-org -->
     </div>
   </section>
 
@@ -699,24 +733,26 @@
 </main><!-- /deck -->
 
 <!-- ════════════════════════════════════════════
-     BOTTOM NAVIGATION
+     ÍNDICE — botão fixo canto inferior esquerdo do deck
+     ════════════════════════════════════════════ -->
+<button class="btn-index-corner" id="btn-index" aria-label="Abrir índice de slides" aria-expanded="false">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+    <rect x="2" y="3"  width="12" height="1.5"/>
+    <rect x="2" y="7"  width="12" height="1.5"/>
+    <rect x="2" y="11" width="12" height="1.5"/>
+  </svg>
+  <span>Índice</span>
+</button>
+
+<!-- ════════════════════════════════════════════
+     BOTTOM NAVIGATION — só anterior / próximo, centrados
      ════════════════════════════════════════════ -->
 <nav class="navbar" role="navigation" aria-label="Navegação da apresentação">
   <button class="btn btn--ghost" id="btn-prev" aria-label="Slide anterior" disabled>
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M10.5 3L5.5 8l5 5"/></svg>
     <span>Anterior</span>
   </button>
-  <div class="navbar__center">
-    <span class="navbar__hint">← → ou Espaço</span>
-    <button class="btn btn--ghost" id="btn-index" aria-label="Abrir índice de slides" aria-expanded="false">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <rect x="2" y="3"  width="12" height="1.5"/>
-        <rect x="2" y="7"  width="12" height="1.5"/>
-        <rect x="2" y="11" width="12" height="1.5"/>
-      </svg>
-      <span>Índice</span>
-    </button>
-  </div>
+  <span class="navbar__hint">← → ou Espaço</span>
   <button class="btn btn--primary" id="btn-next" aria-label="Próximo slide">
     <span>Próximo</span>
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5.5 3l5 5-5 5"/></svg>

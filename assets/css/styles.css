@@ -24,10 +24,21 @@
   --gray-90:     #262626;
   --gray-100:    #161616;
 
-  /* ---- IBM Blue — primary brand color ---- */
-  --ibm-blue:    #0f62fe;
-  --ibm-blue-h:  #0043ce;
-  --ibm-blue-d:  #002d9c;
+  /* ---- IBM Blue — escala completa (IBM Color System) ---- */
+  --blue-10:     #edf5ff;
+  --blue-20:     #d0e2ff;
+  --blue-30:     #a6c8ff;
+  --blue-40:     #78a9ff;
+  --blue-60:     #0f62fe;   /* IBM Blue — interactive, primary brand */
+  --blue-70:     #0043ce;
+  --blue-80:     #002d9c;
+  --blue-90:     #001d6c;
+  --blue-100:    #001141;
+
+  /* ---- aliases semânticos de azul (mantém compatibilidade) ---- */
+  --ibm-blue:    var(--blue-60);   /* #0f62fe — cor primária IBM */
+  --ibm-blue-h:  var(--blue-70);   /* #0043ce — hover */
+  --ibm-blue-d:  var(--blue-80);   /* #002d9c — pressed / dark */
 
   /* ---- IBM Core Colors — Carbon Design System ---- */
   --ibm-cyan:    #1192e8;
@@ -1023,23 +1034,46 @@ button {
   height: var(--navbar-h);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;   /* anterior + próximo centrados */
+  gap: var(--u-4);
   padding: 0 var(--u-5);
   background: var(--bg);
   border-top: 1px solid var(--line);
   z-index: 40;
   backdrop-filter: blur(8px);
 }
-.navbar__center {
-  display: flex;
-  align-items: center;
-  gap: var(--u-3);
-}
 .navbar__hint {
   color: var(--ink-muted);
   font-family: var(--font-mono);
   font-size: var(--text-12);
   letter-spacing: 0.02em;
+}
+
+/* Botão Índice — canto inferior esquerdo, sobreposto ao deck */
+.btn-index-corner {
+  position: fixed;
+  bottom: calc(var(--navbar-h) + 16px);
+  left: 16px;
+  z-index: 41;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--u-2);
+  height: 36px;
+  padding: 0 var(--u-4);
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-12);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--duration-fast-02) var(--ease-standard);
+}
+.btn-index-corner:hover  { background: var(--bg-alt); }
+.btn-index-corner:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: var(--focus-offset);
 }
 
 .btn {
@@ -1098,6 +1132,14 @@ button {
   }
   .navbar__hint {
     display: none;
+  }
+  .btn-index-corner span {
+    display: none;
+  }
+  .btn-index-corner {
+    padding: 0 var(--u-3);
+    width: 36px;
+    justify-content: center;
   }
   .topbar {
     padding: 0 var(--u-4);
