@@ -11,14 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css" />
   <style>
-    /* ── Deck chrome ── */
-    .deck { position: fixed; top: calc(2px + var(--topbar-h)); bottom: var(--navbar-h); left: 0; right: 0; overflow: hidden; }
-    .slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 240ms var(--ease-standard), transform 400ms var(--ease-standard), visibility 0s 400ms; overflow: auto; }
-    .slide.is-active { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity 240ms var(--ease-entrance), transform 400ms var(--ease-entrance), visibility 0s; }
-    .slide__inner { max-width: 1280px; margin: 0 auto; padding: 48px 64px 56px; min-height: 100%; display: flex; flex-direction: column; gap: 32px; }
-
-    /* ── IBMmark (8-bar) inline SVG ── */
-    .ibm-mark { display: inline-block; }
+    /* ─────────────────────────────────────────────────────
+       Deck chrome — usa tokens Carbon do styles.css
+       spacing-09 = 48px · spacing-10 = 64px · spacing-07 = 32px
+    ───────────────────────────────────────────────────── */
+    .deck  { position: fixed; top: calc(2px + var(--topbar-h)); bottom: var(--navbar-h); left: 0; right: 0; overflow: hidden; }
+    .slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: translateY(var(--spacing-03)); transition: opacity var(--duration-moderate-02) var(--ease-standard), transform var(--duration-slow-01) var(--ease-standard), visibility 0s var(--duration-slow-01); overflow: auto; }
+    .slide.is-active { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity var(--duration-moderate-02) var(--ease-entrance), transform var(--duration-slow-01) var(--ease-entrance), visibility 0s; }
+    .slide__inner { max-width: 1280px; margin: 0 auto; padding: var(--spacing-09) var(--spacing-10) var(--spacing-10); min-height: 100%; display: flex; flex-direction: column; gap: var(--spacing-07); }
 
     /* ── Cover ── */
     .cover-bg {
@@ -27,137 +27,118 @@
                   radial-gradient(600px 400px at 15% 85%, rgba(17,146,232,.035) 0, transparent 55%),
                   #ffffff;
     }
-    .cover-grid { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; flex: 1; gap: 40px; max-width: 58%; }
-    .cover-tag { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
-    .cover-title { font-family: var(--font-sans); font-weight: 300; font-size: clamp(2.8rem, 5.5vw, 4.5rem); line-height: 1.05; letter-spacing: -.02em; color: var(--ink); margin: 0; }
-    .cover-title em { font-style: normal; color: var(--ibm-blue); font-weight: 400; }
-    .cover-subtitle { font-size: 18px; color: var(--ink-muted); font-weight: 400; margin: 0; max-width: 52ch; }
-    .cover-foot { display: flex; gap: 32px; align-items: flex-start; padding-top: 24px; border-top: 1px solid var(--line); }
-    .presenter-box { display: flex; flex-direction: column; gap: 2px; }
-    .presenter-box .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
-    .presenter-box .name { font-size: 16px; font-weight: 600; color: var(--ink); margin-top: 2px; }
-    .presenter-box .role { font-size: 13px; color: var(--ink-muted); }
-    .cover-mark-wrap { position: absolute; right: 64px; bottom: 56px; width: 220px; height: 220px; color: var(--gray-20); pointer-events: none; z-index: 1; }
-
-    /* ── Section label slides ── */
-    .section-slide { display: flex; flex-direction: column; justify-content: center; flex: 1; }
-    .section-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ibm-blue); margin-bottom: 16px; }
-    .section-h { font-family: var(--font-sans); font-weight: 300; font-size: clamp(2.2rem, 4.5vw, 3.8rem); line-height: 1.08; letter-spacing: -.02em; color: var(--ink); margin: 0; }
-    .section-body { font-size: 18px; color: var(--ink-muted); max-width: 60ch; line-height: 1.6; margin-top: 16px; }
-
-    /* ── Tiles grid ── */
-    .tiles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .tiles--4 { grid-template-columns: repeat(4, 1fr); }
-    .tiles--3 { grid-template-columns: repeat(3, 1fr); }
-    .tiles--2 { grid-template-columns: repeat(2, 1fr); }
-    .tile-card { background: var(--bg); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; }
-    .tile-card__tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ibm-blue); }
-    .tile-card__title { font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
-    .tile-card__body { font-size: 14px; line-height: 1.55; color: var(--ink-muted); }
-    .tile-card--accent { background: var(--layer); }
-    .tile-card--blue { background: var(--ibm-blue); }
-    .tile-card--blue .tile-card__tag, .tile-card--blue .tile-card__title, .tile-card--blue .tile-card__body { color: #fff; }
-
-    /* ── Carbon icon as <img> — tinted IBM Blue ── */
-    .picto-img {
-      width: 40px; height: 40px; flex-shrink: 0; display: block;
-      /* invert to white then shift hue to IBM Blue #0f62fe */
-      filter: invert(30%) sepia(90%) saturate(4000%) hue-rotate(210deg) brightness(105%);
-    }
-
-    /* ── Team hierarchy (no connector lines) ── */
-    .team-org { display: flex; flex-direction: column; align-items: center; gap: 16px; flex: 1; justify-content: center; }
-    .team-tier { display: flex; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .team-tier--single { width: 260px; }
-    .team-tier--4     { width: 100%; max-width: 840px; }
-    .team-tier--2     { width: 100%; max-width: 420px; }
-
-    .member { background: var(--bg); padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; flex: 1; }
-    .member__photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid var(--line); flex-shrink: 0; }
-    .member__name { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
-    .member__role { font-size: 11px; color: var(--ink-muted); line-height: 1.4; }
-    .member--lead { background: var(--layer); }
-    .member--lead .member__photo { width: 88px; height: 88px; border-color: var(--ibm-blue); border-width: 3px; }
-    .member--lead .member__name { font-size: 15px; }
-    .member--lead .member__role { font-size: 12px; }
-    .member--lead .member__name::after { content: ' ✦'; font-size: 9px; color: var(--ibm-blue); }
+    .cover-grid       { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; flex: 1; gap: var(--spacing-08); max-width: 58%; }
+    .cover-tag        { font-family: var(--font-mono); font-size: var(--label-01-size); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+    .cover-title      { font-family: var(--font-sans); font-weight: 300; font-size: clamp(2.8rem, 5.5vw, 4.5rem); line-height: 1.05; letter-spacing: -.02em; color: var(--ink); margin: 0; }
+    .cover-title em   { font-style: normal; color: var(--ibm-blue); font-weight: 400; }
+    .cover-subtitle   { font-size: var(--body-02-size); color: var(--ink-muted); font-weight: 400; margin: 0; max-width: 52ch; }
+    .cover-foot       { display: flex; gap: var(--spacing-07); align-items: flex-start; padding-top: var(--spacing-06); border-top: 1px solid var(--line); }
+    .presenter-box    { display: flex; flex-direction: column; gap: var(--spacing-01); }
+    .presenter-box .label { font-family: var(--font-mono); font-size: var(--label-01-size); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+    .presenter-box .name  { font-size: var(--heading-02-size); font-weight: 600; color: var(--ink); margin-top: var(--spacing-01); }
+    .presenter-box .role  { font-size: var(--label-01-size); color: var(--ink-muted); }
 
     /* ── Cover decoration panel ── */
-    .cover-deco {
-      position: absolute; right: 0; top: 0; bottom: 0; width: 38%;
-      z-index: 1; pointer-events: none; overflow: hidden;
-      display: flex; align-items: flex-end; justify-content: flex-end;
-    }
-    .cover-deco__grid {
-      display: grid; grid-template-columns: repeat(4, 56px); grid-template-rows: repeat(4, 56px);
-      gap: 1px; opacity: .13; margin: 0 48px 56px 0;
-    }
-    .cover-deco__cell {
-      background: var(--ibm-blue);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .cover-deco__cell img { width: 28px; height: 28px; filter: invert(1); }
+    .cover-deco { position: absolute; right: 0; top: 0; bottom: 0; width: 38%; z-index: 1; pointer-events: none; overflow: hidden; display: flex; align-items: flex-end; justify-content: flex-end; }
+    .cover-deco__grid { display: grid; grid-template-columns: repeat(4, var(--spacing-10)); grid-template-rows: repeat(4, var(--spacing-10)); gap: 1px; opacity: .13; margin: 0 var(--spacing-09) var(--spacing-10) 0; }
+    .cover-deco__cell { background: var(--ibm-blue); display: flex; align-items: center; justify-content: center; }
+    .cover-deco__cell img { width: var(--spacing-07); height: var(--spacing-07); filter: invert(1); }
     .cover-deco__cell--empty { background: transparent; border: 1px solid var(--ibm-blue); }
     .cover-deco__cell--solid { background: var(--ibm-blue); }
     @media (max-width: 900px) { .cover-deco { display: none; } }
 
-    /* ── Method image slide ── */
-    .method-img { width: 100%; height: auto; border: 1px solid var(--line); display: block; }
+    /* ── Tiles grid ── */
+    .tiles       { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .tiles--4    { grid-template-columns: repeat(4, 1fr); }
+    .tiles--3    { grid-template-columns: repeat(3, 1fr); }
+    .tiles--2    { grid-template-columns: repeat(2, 1fr); }
+    /* tiles--stretch: ocupa o espaço restante do slide, cards crescem junto */
+    .tiles--stretch        { flex: 1; align-content: stretch; }
+    .tiles--stretch .tile-card { flex: 1; }
+    .tile-card         { background: var(--bg); padding: var(--spacing-07) var(--spacing-06); display: flex; flex-direction: column; gap: var(--spacing-04); }
+    .tile-card__tag    { font-family: var(--font-mono); font-size: var(--label-01-size); letter-spacing: .06em; text-transform: uppercase; color: var(--ibm-blue); }
+    .tile-card__title  { font-size: var(--heading-03-size); font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+    .tile-card__body   { font-size: var(--heading-compact-01-size); line-height: 1.55; color: var(--ink-muted); }
+    .tile-card--accent { background: var(--layer); }
+    .tile-card--blue   { background: var(--ibm-blue); }
+    .tile-card--blue .tile-card__tag,
+    .tile-card--blue .tile-card__title,
+    .tile-card--blue .tile-card__body { color: #fff; }
 
-    /* ── Phase detail slide ── */
-    .phase-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex: 1; }
-    .phase-col { display: flex; flex-direction: column; gap: 16px; }
-    .phase-badge { display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; background: var(--ibm-blue); color: #fff; align-self: flex-start; }
-    .phase-title { font-size: 32px; font-weight: 300; color: var(--ink); letter-spacing: -.01em; margin: 0; }
-    .phase-desc { font-size: 15px; color: var(--ink-muted); line-height: 1.6; max-width: 44ch; }
+    /* ── Carbon icon as <img> — tinted IBM Blue ── */
+    .picto-img { width: var(--spacing-08); height: var(--spacing-08); flex-shrink: 0; display: block; filter: invert(30%) sepia(90%) saturate(4000%) hue-rotate(210deg) brightness(105%); }
 
+    /* ── Team hierarchy ── */
+    .team-org         { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-05); flex: 1; justify-content: center; }
+    .team-tier        { display: flex; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .team-tier--single { width: 260px; }
+    .team-tier--5     { width: 100%; max-width: 1050px; }
+    .team-tier--4     { width: 100%; max-width: 840px; }
+    .team-tier--2     { width: 100%; max-width: 420px; }
+    .member           { background: var(--bg); padding: var(--spacing-06) var(--spacing-05); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-03); text-align: center; flex: 1; }
+    .member__photo    { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid var(--line); flex-shrink: 0; }
+    .member__name     { font-size: var(--heading-compact-01-size); font-weight: 600; color: var(--ink); line-height: 1.3; }
+    .member__role     { font-size: var(--label-01-size); color: var(--ink-muted); line-height: 1.4; }
+    .member--lead     { background: var(--layer); }
+    .member--lead .member__photo { width: 88px; height: 88px; border-color: var(--ibm-blue); border-width: 3px; }
+    .member--lead .member__name  { font-size: var(--body-02-size); }
+    .member--lead .member__role  { font-size: var(--body-compact-01-size); }
+    .member--lead .member__name::after { content: ' ✦'; font-size: 9px; color: var(--ibm-blue); }
+
+    /* ── Phase slides ── */
+    .phase-wrap      { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-06); flex: 1; }
+    .phase-col       { display: flex; flex-direction: column; gap: var(--spacing-05); }
+    .phase-badge     { display: inline-block; font-family: var(--font-mono); font-size: var(--label-01-size); letter-spacing: .06em; text-transform: uppercase; padding: var(--spacing-02) var(--spacing-04); background: var(--ibm-blue); color: #fff; align-self: flex-start; }
+    .phase-title     { font-size: var(--heading-05-size); font-weight: 300; color: var(--ink); letter-spacing: -.01em; margin: 0; }
+    .phase-desc      { font-size: var(--body-compact-01-size); color: var(--ink-muted); line-height: 1.6; max-width: 44ch; }
     .phase-info-grid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .phase-info-row { background: var(--bg); padding: 16px 20px; display: flex; flex-direction: column; gap: 4px; }
-    .phase-info-row__label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ibm-blue); }
-    .phase-info-row__value { font-size: 15px; color: var(--ink); line-height: 1.5; }
+    .phase-info-row  { background: var(--bg); padding: var(--spacing-05) var(--spacing-06); display: flex; flex-direction: column; gap: var(--spacing-02); }
+    .phase-info-row__label { font-family: var(--font-mono); font-size: var(--label-01-size); letter-spacing: .06em; text-transform: uppercase; color: var(--ibm-blue); }
+    .phase-info-row__value { font-size: var(--body-compact-01-size); color: var(--ink); line-height: 1.5; }
     .phase-info-row--accent { background: var(--layer); }
 
-    .activities-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .activities-list li { background: var(--bg); padding: 12px 16px; font-size: 14px; color: var(--ink); display: flex; gap: 10px; align-items: baseline; }
-    .activities-list li::before { content: '→'; font-family: var(--font-mono); font-size: 12px; color: var(--ibm-blue); flex-shrink: 0; }
+    /* ── Activities list ── */
+    .activities-list    { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .activities-list li { background: var(--bg); padding: var(--spacing-04) var(--spacing-05); font-size: var(--heading-compact-01-size); color: var(--ink); display: flex; gap: var(--spacing-03); align-items: baseline; }
+    .activities-list li::before { content: '→'; font-family: var(--font-mono); font-size: var(--label-01-size); color: var(--ibm-blue); flex-shrink: 0; }
 
-    /* ── Next steps checklist ── */
-    .next-steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .ns-item { background: var(--bg); padding: 24px; display: flex; gap: 24px; align-items: flex-start; }
-    .ns-item__num { font-family: var(--font-mono); font-size: 11px; color: var(--ibm-blue); letter-spacing: .04em; flex-shrink: 0; padding-top: 3px; }
-    .ns-item__title { font-size: 18px; font-weight: 600; color: var(--ink); }
-    .ns-item__body { font-size: 14px; color: var(--ink-muted); margin-top: 4px; line-height: 1.55; }
+    /* ── Next steps ── */
+    .next-steps    { list-style: none; padding: 0; margin: 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .ns-item       { background: var(--bg); padding: var(--spacing-06); display: flex; gap: var(--spacing-06); align-items: flex-start; }
+    .ns-item__num  { font-family: var(--font-mono); font-size: var(--label-01-size); color: var(--ibm-blue); letter-spacing: .04em; flex-shrink: 0; padding-top: var(--spacing-02); }
+    .ns-item__title { font-size: var(--body-02-size); font-weight: 600; color: var(--ink); }
+    .ns-item__body  { font-size: var(--heading-compact-01-size); color: var(--ink-muted); margin-top: var(--spacing-02); line-height: 1.55; }
 
-    /* ── Closing ── */
-    .closing-bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, #001d6c 0%, #0043ce 35%, #0f62fe 55%, #ffffff 75%); }
+    /* ── Closing slide ── */
+    .closing-bg   { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, var(--blue-90) 0%, var(--blue-70) 35%, var(--blue-60) 55%, #ffffff 75%); }
     .closing-grid { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
-    .closing-ty { font-family: var(--font-sans); font-weight: 300; font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.0; letter-spacing: -.03em; color: #fff; }
-    .contact-card { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(8px); padding: 28px 32px; display: flex; gap: 24px; align-items: flex-start; max-width: 540px; }
-    .contact-card__avatar { width: 64px; height: 64px; border-radius: 0; background: rgba(255,255,255,.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #fff; }
-    .contact-card__info { display: flex; flex-direction: column; gap: 4px; }
-    .contact-card__name { font-size: 20px; font-weight: 600; color: #fff; }
-    .contact-card__role { font-size: 14px; color: rgba(255,255,255,.75); }
-    .contact-card__contact { font-size: 13px; color: rgba(255,255,255,.6); font-family: var(--font-mono); margin-top: 8px; display: flex; flex-direction: column; gap: 3px; }
+    .closing-ty   { font-family: var(--font-sans); font-weight: 300; font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.0; letter-spacing: -.03em; color: #fff; }
+    .contact-card { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(8px); padding: var(--spacing-07) var(--spacing-07); display: flex; gap: var(--spacing-06); align-items: flex-start; max-width: 540px; }
+    .contact-card__avatar  { width: var(--spacing-10); height: var(--spacing-10); background: rgba(255,255,255,.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .contact-card__info    { display: flex; flex-direction: column; gap: var(--spacing-02); }
+    .contact-card__name    { font-size: var(--heading-03-size); font-weight: 600; color: #fff; }
+    .contact-card__role    { font-size: var(--heading-compact-01-size); color: rgba(255,255,255,.75); }
+    .contact-card__contact { font-size: var(--label-01-size); color: rgba(255,255,255,.6); font-family: var(--font-mono); margin-top: var(--spacing-03); display: flex; flex-direction: column; gap: var(--spacing-02); }
+
+    /* ── Method image ── */
+    .method-img { width: 100%; height: auto; border: 1px solid var(--line); display: block; }
 
     /* ── Utility ── */
-    .accent-bar { width: 48px; height: 2px; background: var(--ibm-blue); }
-    .accent-bar--long { width: 96px; }
+    .accent-bar       { width: var(--spacing-09); height: 2px; background: var(--ibm-blue); }
+    .accent-bar--long { width: var(--spacing-11); }
     .accent-bar--cyan { background: var(--ibm-cyan); }
 
+    /* ── Responsive ── */
     @media (max-width: 900px) {
-      .slide__inner { padding: 40px 24px 48px; }
-      .tiles--4 { grid-template-columns: repeat(2, 1fr); }
-      .tiles--3 { grid-template-columns: 1fr; }
-      .tiles--2 { grid-template-columns: 1fr; }
-      .phase-wrap { grid-template-columns: 1fr; }
-      .cover-mark-wrap { display: none; }
+      .slide__inner  { padding: var(--spacing-07) var(--spacing-06) var(--spacing-08); }
+      .tiles--4      { grid-template-columns: repeat(2, 1fr); }
+      .tiles--3      { grid-template-columns: 1fr; }
+      .tiles--2      { grid-template-columns: 1fr; }
+      .phase-wrap    { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition-duration: .01ms !important; }
     }
-
-    /* IBM logo SVG inline helper */
-    .ibm-svg { display: inline-flex; align-items: center; }
   </style>
 </head>
 <body>
@@ -299,7 +280,7 @@
         <h2 class="title">Fundamentos de Client Engineering</h2>
         <p class="subtitle">Quatro princípios que guiam cada engajamento</p>
       </div>
-      <div class="tiles tiles--4" style="flex:1;">
+      <div class="tiles tiles--4 tiles--stretch">
         <div class="tile-card">
           <img class="picto-img" src="assets/icons/idea.svg" alt="" aria-hidden="true" />
           <p class="tile-card__tag">01</p>
@@ -393,8 +374,8 @@
           </div>
         </div>
 
-        <!-- Tier 2 · 4 specialists -->
-        <div class="team-tier team-tier--4">
+        <!-- Tier 2 · 5 specialists -->
+        <div class="team-tier team-tier--5">
           <div class="member">
             <img class="member__photo" src="assets/img/claudio.png" alt="Foto de Cláudio Farias" />
             <span class="member__name">Cláudio Farias</span>
@@ -403,6 +384,11 @@
           <div class="member">
             <img class="member__photo" src="assets/img/jorge.png" alt="Foto de Jorge Barbosa" />
             <span class="member__name">Jorge Barbosa</span>
+            <span class="member__role">Engenheiro de IA</span>
+          </div>
+          <div class="member">
+            <img class="member__photo" src="assets/img/igor.png" alt="Foto de Igor" />
+            <span class="member__name">Igor</span>
             <span class="member__role">Engenheiro de IA</span>
           </div>
           <div class="member">
@@ -732,31 +718,38 @@
 
 </main><!-- /deck -->
 
-<!-- ════════════════════════════════════════════
-     ÍNDICE — botão fixo canto inferior esquerdo do deck
-     ════════════════════════════════════════════ -->
-<button class="btn-index-corner" id="btn-index" aria-label="Abrir índice de slides" aria-expanded="false">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-    <rect x="2" y="3"  width="12" height="1.5"/>
-    <rect x="2" y="7"  width="12" height="1.5"/>
-    <rect x="2" y="11" width="12" height="1.5"/>
-  </svg>
-  <span>Índice</span>
-</button>
 
 <!-- ════════════════════════════════════════════
-     BOTTOM NAVIGATION — só anterior / próximo, centrados
+     BOTTOM NAVIGATION
      ════════════════════════════════════════════ -->
 <nav class="navbar" role="navigation" aria-label="Navegação da apresentação">
-  <button class="btn btn--ghost" id="btn-prev" aria-label="Slide anterior" disabled>
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M10.5 3L5.5 8l5 5"/></svg>
-    <span>Anterior</span>
+
+  <!-- Índice — canto esquerdo -->
+  <button class="btn btn--ghost" id="btn-index" aria-label="Abrir índice de slides" aria-expanded="false">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <rect x="2" y="3"  width="12" height="1.5"/>
+      <rect x="2" y="7"  width="12" height="1.5"/>
+      <rect x="2" y="11" width="12" height="1.5"/>
+    </svg>
+    <span>Índice</span>
   </button>
-  <span class="navbar__hint">← → ou Espaço</span>
-  <button class="btn btn--primary" id="btn-next" aria-label="Próximo slide">
-    <span>Próximo</span>
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5.5 3l5 5-5 5"/></svg>
-  </button>
+
+  <!-- Anterior + Próximo — centro -->
+  <div class="navbar__center">
+    <button class="btn btn--ghost" id="btn-prev" aria-label="Slide anterior" disabled>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M10.5 3L5.5 8l5 5"/></svg>
+      <span>Anterior</span>
+    </button>
+    <span class="navbar__hint">← →</span>
+    <button class="btn btn--primary" id="btn-next" aria-label="Próximo slide">
+      <span>Próximo</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5.5 3l5 5-5 5"/></svg>
+    </button>
+  </div>
+
+  <!-- Spacer direita para simetria -->
+  <div class="navbar__spacer" aria-hidden="true"></div>
+
 </nav>
 
 <!-- ════════════════════════════════════════════

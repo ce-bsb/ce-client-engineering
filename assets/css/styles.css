@@ -1034,46 +1034,27 @@ button {
   height: var(--navbar-h);
   display: flex;
   align-items: center;
-  justify-content: center;   /* anterior + próximo centrados */
-  gap: var(--u-4);
+  justify-content: space-between;  /* índice esquerda · nav centro · spacer direita */
   padding: 0 var(--u-5);
   background: var(--bg);
   border-top: 1px solid var(--line);
   z-index: 40;
   backdrop-filter: blur(8px);
 }
+.navbar__center {
+  display: flex;
+  align-items: center;
+  gap: var(--u-3);
+}
+.navbar__spacer {
+  width: 88px;   /* mesma largura do btn--ghost "Índice" para manter simetria */
+  flex-shrink: 0;
+}
 .navbar__hint {
   color: var(--ink-muted);
   font-family: var(--font-mono);
   font-size: var(--text-12);
   letter-spacing: 0.02em;
-}
-
-/* Botão Índice — canto inferior esquerdo, sobreposto ao deck */
-.btn-index-corner {
-  position: fixed;
-  bottom: calc(var(--navbar-h) + 16px);
-  left: 16px;
-  z-index: 41;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--u-2);
-  height: 36px;
-  padding: 0 var(--u-4);
-  background: var(--bg);
-  border: 1px solid var(--line-strong);
-  color: var(--ink);
-  font-family: var(--font-sans);
-  font-size: var(--text-12);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background var(--duration-fast-02) var(--ease-standard);
-}
-.btn-index-corner:hover  { background: var(--bg-alt); }
-.btn-index-corner:focus-visible {
-  outline: var(--focus-width) solid var(--focus-color);
-  outline-offset: var(--focus-offset);
 }
 
 .btn {
@@ -1133,13 +1114,8 @@ button {
   .navbar__hint {
     display: none;
   }
-  .btn-index-corner span {
-    display: none;
-  }
-  .btn-index-corner {
-    padding: 0 var(--u-3);
+  .navbar__spacer {
     width: 36px;
-    justify-content: center;
   }
   .topbar {
     padding: 0 var(--u-4);
