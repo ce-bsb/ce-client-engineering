@@ -64,6 +64,13 @@
     .tile-card--blue .tile-card__tag,
     .tile-card--blue .tile-card__title,
     .tile-card--blue .tile-card__body { color: #fff; }
+    .foundation-layout { display: flex; flex-direction: column; gap: 1px; flex: 1; min-height: 0; }
+    .foundation-layout .tiles { flex: 1; }
+    .differential-card { display: grid; grid-template-columns: minmax(160px, .28fr) minmax(0, .72fr); gap: var(--spacing-06); align-items: center; background: var(--blue-10); border: 1px solid var(--blue-30); border-left: 4px solid var(--ibm-blue); padding: var(--spacing-05) var(--spacing-06); min-height: 112px; }
+    .differential-card__meta { display: flex; flex-direction: column; gap: var(--spacing-02); }
+    .differential-card__tag { font-family: var(--font-mono); font-size: var(--label-01-size); letter-spacing: .06em; text-transform: uppercase; color: var(--ibm-blue); }
+    .differential-card__title { font-size: var(--heading-03-size); line-height: 1.25; font-weight: 600; color: var(--ink); }
+    .differential-card__body { font-size: var(--body-compact-01-size); line-height: 1.55; color: var(--ink-muted); }
 
     /* ── Carbon icon as <img> — tinted IBM Blue ── */
     .picto-img { width: var(--spacing-08); height: var(--spacing-08); flex-shrink: 0; display: block; filter: invert(30%) sepia(90%) saturate(4000%) hue-rotate(210deg) brightness(105%); }
@@ -278,8 +285,9 @@
       <div>
         <p class="eyebrow eyebrow--accent">01 · Fundamentos</p>
         <h2 class="title">Fundamentos de Client Engineering</h2>
-        <p class="subtitle">Quatro princípios que guiam cada engajamento</p>
+        <p class="subtitle">Quatro princípios que guiam cada engajamento, com a velocidade e expertise IBM como diferencial</p>
       </div>
+      <div class="foundation-layout">
       <div class="tiles tiles--4 tiles--stretch">
         <div class="tile-card">
           <img class="picto-img" src="assets/icons/idea.svg" alt="" aria-hidden="true" />
@@ -305,6 +313,14 @@
           <p class="tile-card__title">Cocriação</p>
           <p class="tile-card__body">O cliente não é um espectador — é um coautor da solução. Garantimos transferência de conhecimento em cada sprint.</p>
         </div>
+      </div>
+      <div class="differential-card">
+        <div class="differential-card__meta">
+          <p class="differential-card__tag">Diferencial</p>
+          <p class="differential-card__title">Speed &amp; IBM Expertise</p>
+        </div>
+        <p class="differential-card__body">Usamos o portfólio IBM — IA, dados, automação, nuvem híbrida, segurança — com agilidade de startup e rigor de engenharia.</p>
+      </div>
       </div>
     </div>
   </section>
@@ -388,7 +404,7 @@
           </div>
           <div class="member">
             <img class="member__photo" src="assets/img/igor.png" alt="Foto de Igor" />
-            <span class="member__name">Igor</span>
+            <span class="member__name">Igor Mascarenhas</span>
             <span class="member__role">Engenheiro de IA</span>
           </div>
           <div class="member">
