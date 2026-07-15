@@ -721,10 +721,9 @@ p{font-weight:300;color:var(--ink2);line-height:1.55}
   padding:clamp(1.5rem,2.5vw,2.5rem) 0;
 }
 .s04-quote-mark{
-  font-size:clamp(4rem,7vw,9rem);font-weight:700;
-  line-height:.7;color:var(--b40);
-  font-family:Georgia,serif;margin-bottom:.25rem;
-  display:block;
+  width:clamp(3.2rem,5.5vw,7rem);height:auto;
+  margin-bottom:.75rem;display:block;
+  filter:brightness(0) saturate(100%) invert(33%) sepia(95%) saturate(3337%) hue-rotate(213deg) brightness(100%) contrast(102%);
 }
 .s04-quote-text{
   font-size:clamp(1rem,1.4vw,1.5rem);font-weight:300;
